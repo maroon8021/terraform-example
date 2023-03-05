@@ -1,17 +1,24 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { useEffect } from "react";
 import styles from "../../styles/Home.module.css";
 
 type Props = {
   title: string;
 };
 
-const Home: NextPage<Props> = ({ title }) => {
-  const cookie = fetch("/get-cookie", {
-    method: "GET",
-  });
-  console.log(cookie);
+const Home: NextPage<Props> = ({ title, cookie }) => {
+  useEffect(() => {
+    const getCookie = async () => {
+      const cookie = await fetch(`${window.origin}/api/get-cookie`, {
+        method: "GET",
+      }).then((d) => d.json());
+
+      console.log(cookie);
+    };
+    getCookie();
+  }, []);
   return (
     <div className={styles.container}>
       <Head>
