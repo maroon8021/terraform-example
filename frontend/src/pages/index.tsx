@@ -8,7 +8,7 @@ type Props = {
   title: string;
 };
 
-const Home: NextPage<Props> = ({ title, cookie }) => {
+const Home: NextPage<Props> = ({ title }) => {
   useEffect(() => {
     const getCookie = async () => {
       const cookie = await fetch(`${window.origin}/api/get-cookie`, {
