@@ -7,10 +7,11 @@ resource "aws_api_gateway_rest_api" "terraform_example_next_ssr_api" {
 }
 
 resource "aws_api_gateway_method" "terraform_example_next_ssr_api_root" {
-  rest_api_id   = aws_api_gateway_rest_api.terraform_example_next_ssr_api.id
-  resource_id   = aws_api_gateway_rest_api.terraform_example_next_ssr_api.root_resource_id
-  http_method   = "ANY"
-  authorization = "NONE"
+  rest_api_id      = aws_api_gateway_rest_api.terraform_example_next_ssr_api.id
+  resource_id      = aws_api_gateway_rest_api.terraform_example_next_ssr_api.root_resource_id
+  http_method      = "ANY"
+  authorization    = "NONE"
+  api_key_required = true
 }
 
 resource "aws_api_gateway_method" "aws_api_gateway_resource_paths" {

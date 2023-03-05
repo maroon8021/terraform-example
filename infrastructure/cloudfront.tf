@@ -33,7 +33,6 @@ resource "aws_cloudfront_distribution" "terraform_example_distribution" {
   enabled         = true
   is_ipv6_enabled = true
   price_class     = "PriceClass_200"
-  comment         = "for sirius api"
 
 
   // api-gateway

@@ -8,6 +8,10 @@ type Props = {
 };
 
 const Home: NextPage<Props> = ({ title }) => {
+  const cookie = fetch("/get-cookie", {
+    method: "GET",
+  });
+  console.log(cookie);
   return (
     <div className={styles.container}>
       <Head>
@@ -20,6 +24,9 @@ const Home: NextPage<Props> = ({ title }) => {
         <h1 className={styles.title}>{title}</h1>
         <div>
           <Link href={"./index2"}>to index2</Link>
+        </div>
+        <div>
+          <p>{`current hash: ${process.env.NEXT_PUBLIC_BUILD_ID}`}</p>
         </div>
       </main>
     </div>
