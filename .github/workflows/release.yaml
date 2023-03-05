@@ -9,7 +9,7 @@ env:
   BUILD_ID: ${{ github.sha }}
 
 jobs:
-  releases_to_test:
+  releases:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -43,7 +43,7 @@ jobs:
 
       - name: set IMAGE_URL
         id: image-url
-        run: echo "IMAGE_URL=${{ steps.login-ecr.outputs.registry }}/terraform_example_next_ssr_repo/${{ github.sha }}" >> $GITHUB_ENV
+        run: echo "IMAGE_URL=${{ steps.login-ecr.outputs.registry }}/terraform_example_next_ssr_repo:${{ github.sha }}" >> $GITHUB_ENV
 
       - name: Build, tag, and push docker image to Amazon ECR
         run: |
