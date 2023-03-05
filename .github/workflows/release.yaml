@@ -5,6 +5,9 @@ on:
     branches:
       - "main"
 
+env:
+  BUILD_ID: ${{ github.sha }}
+
 jobs:
   releases_to_test:
     runs-on: ubuntu-latest
@@ -31,27 +34,17 @@ jobs:
       - name: install dependencies
         run: npm ci
 
-      - name: show commit hash
-        run: echo ${{ github.sha }}
-
       - name: build
-        env:
-          BUILD_ID: ${{ github.sha }}
         run: npm run build:s
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      # - name: set IMAGE_URL
-      #   id: image-url
-      #   run: echo "${{ steps.login-ecr.outputs.registry }}/terraform_example_next_ssr_repo/${{ github.sha }}" >> $GITHUB_OUTPUT
-
       - name: set IMAGE_URL
         id: image-url
         run: echo "IMAGE_URL=${{ steps.login-ecr.outputs.registry }}/terraform_example_next_ssr_repo/${{ github.sha }}" >> $GITHUB_ENV
 
-      # - run: echo ${{ steps.image-url.output }}
       - run: echo ${{ env.IMAGE_URL }}
 
       - name: Build, tag, and push docker image to Amazon ECR
