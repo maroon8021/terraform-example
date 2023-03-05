@@ -45,11 +45,9 @@ jobs:
         id: image-url
         run: echo "IMAGE_URL=${{ steps.login-ecr.outputs.registry }}/terraform_example_next_ssr_repo/${{ github.sha }}" >> $GITHUB_ENV
 
-      - run: echo ${{ env.IMAGE_URL }}
-
       - name: Build, tag, and push docker image to Amazon ECR
         run: |
-          docker build -t ${{ env.IMAGE_URL }} .
+          docker build -t ${{ env.IMAGE_URL }} --build-arg build_id=${{ github.sha }} .
           docker push ${{ env.IMAGE_URL }}
 
       - name: deploy to lambda

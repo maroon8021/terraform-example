@@ -1,5 +1,7 @@
 # Multi-stage buildでNext.jsをビルド
 FROM node:16 AS builder
+ARG build_id
+ENV BUILD_ID=${build_id}
 WORKDIR /build
 COPY package*.json ./
 RUN npm ci
