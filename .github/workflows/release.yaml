@@ -54,4 +54,4 @@ jobs:
         run: aws lambda update-function-code --function-name terraformExampleNextSSR --image-uri ${{ env.IMAGE_URL }}
 
       - name: deploy static to s3
-        run: aws s3 cp --recursive --region ap-northeast-1 ./.next/static s3://test-sirius-frotend/_next/static
+        run: aws s3 cp --recursive --region ap-northeast-1 ./.next/static s3://${{ secrets.S3_BUCKET }}/_next/static
