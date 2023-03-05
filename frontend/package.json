@@ -1,0 +1,31 @@
+{
+  "name": "next-ssr",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build && pnpm set-lambda-js && pnpm set-serverless-http",
+    "build:s": "next build",
+    "deploy:s3": "aws s3 cp --recursive --region ap-northeast-1 ./.next/static s3://next-ssr-static-321/_next/static",
+    "start": "next start",
+    "lint": "next lint",
+    "set-lambda-js": "cp -f ./src/lambda.js ./.next/standalone/",
+    "set-serverless-http": "cp -f -r ./node_modules/serverless-http ./.next/standalone/node_modules/",
+    "to-lambda-js": "tsc src/lambda.ts --outDir ./.next/standalone/"
+  },
+  "dependencies": {
+    "@types/node": "18.11.11",
+    "@types/react": "18.0.26",
+    "@types/react-dom": "18.0.9",
+    "eslint": "8.29.0",
+    "eslint-config-next": "13.0.6",
+    "next": "13.0.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "serverless-http": "^3.1.0",
+    "typescript": "4.9.3"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  }
+}

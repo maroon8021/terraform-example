@@ -1,0 +1,61 @@
+name: Release to test
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  releases_to_test:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          role-to-assume: ${{ secrets.IAM_ROLE }}
+          aws-region: ap-northeast-1
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: show commit hash
+        run: echo ${{ github.sha }}
+
+      - name: build
+        env:
+          BUILD_ID: ${{ github.sha }}
+        run: npm run build:s
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: set IMAGE_URL
+        id: image-url
+        run: echo "${{ steps.login-ecr.outputs.registry }}/terraform_example_next_ssr_repo/${{ github.sha }}" >> $GITHUB_OUTPUT
+
+      - run: echo ${{ steps.image-url.output }}
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        run: |
+          docker build -t ${{ steps.image-url.output }} .
+          docker push ${{ steps.image-url.output }}
+
+      - name: deploy to lambda
+        run: aws lambda update-function-code --function-name terraformExampleNextSSR --image-uri ${{ steps.image-url.output }}
+
+      - name: deploy static to s3
+        run: aws s3 cp --recursive --region ap-northeast-1 ./.next/static s3://test-sirius-frotend/_next/static
