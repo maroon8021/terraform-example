@@ -53,6 +53,11 @@ jobs:
       - name: build
         run: npm run build:s
 
+      - name: cp
+        run: |
+          cp ./next.config.js /tmp/.buildx-cache/
+          cp ./.next /tmp/.buildx-cache/.next
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
