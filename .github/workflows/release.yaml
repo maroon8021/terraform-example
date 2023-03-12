@@ -75,9 +75,8 @@ jobs:
           tags: ${{ env.IMAGE_URL }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-          file: frontend/Dockerfile
           # path: frontend
-          context: .
+          context: ./
 
       - name: deploy to lambda
         run: aws lambda update-function-code --function-name terraformExampleNextSSR --image-uri ${{ env.IMAGE_URL }}
