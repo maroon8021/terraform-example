@@ -66,6 +66,9 @@ jobs:
       #     docker build -t ${{ env.IMAGE_URL }} --build-arg build_id=${{ github.sha }} .
       #     docker push ${{ env.IMAGE_URL }}
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - uses: docker/build-push-action@v2
         with:
           push: true
