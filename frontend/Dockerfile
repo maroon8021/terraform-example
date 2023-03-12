@@ -1,16 +1,3 @@
-# Multi-stage buildでNext.jsをビルド
-FROM node:16 AS builder
-ARG build_id
-ENV BUILD_ID=${build_id}
-ENV NEXT_PUBLIC_BUILD_ID=${build_id}
-WORKDIR /build
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build:s
-
-
-
 # ベースイメージの変更
 FROM amazon/aws-lambda-nodejs:16
 
@@ -19,8 +6,8 @@ COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.5.0 /lambda-adapter /opt
 ENV PORT=3000
 ENV NODE_ENV=production
 
-COPY --from=builder /build/next.config.js ./
-COPY --from=builder /build/.next/standalone ./
+COPY ./next.config.js ./
+COPY ./.next/standalone ./
 
 # ベースイメージ変更に伴う調整
 ENTRYPOINT ["node"]
