@@ -53,11 +53,6 @@ jobs:
       - name: build
         run: npm run build:s
 
-      - name: cp
-        run: |
-          cp ./next.config.js /tmp/.buildx-cache/
-          cp ./.next /tmp/.buildx-cache/.next
-
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -81,6 +76,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           file: frontend/Dockerfile
+          path: frontend
 
       - name: deploy to lambda
         run: aws lambda update-function-code --function-name terraformExampleNextSSR --image-uri ${{ env.IMAGE_URL }}
