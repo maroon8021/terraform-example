@@ -6,8 +6,6 @@ COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.5.0 /lambda-adapter /opt
 ENV PORT=3000
 ENV NODE_ENV=production
 
-RUN echo $(ls -a)
-
 COPY ./next.config.js ./
 COPY ./.next/standalone ./
 
