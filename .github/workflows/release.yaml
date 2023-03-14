@@ -75,8 +75,8 @@ jobs:
         with:
           push: true
           tags: ${{ env.IMAGE_URL }}
-          cache-from: type=docker,src=/tmp/.buildx-cache
-          cache-to: type=docker,dest=/tmp/.buildx-cache-new,mode=max
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=loacl,dest=/tmp/.buildx-cache-new,mode=max
           # path: frontend
           context: ./frontend
           provenance: false
