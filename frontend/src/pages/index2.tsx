@@ -18,6 +18,7 @@ const Home: NextPage<Props> = ({ title }) => {
 
       <main className={styles.main}>
         <h1 className={styles.title2}>{title}</h1>
+        <p>index2だよ〜〜〜</p>
         <div>
           <Link href={"./"}>to index</Link>
         </div>
